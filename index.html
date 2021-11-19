@@ -272,9 +272,8 @@
 						}
 
 						controls.pose = - 1;
-						for ( let i = 0; i < vpdFiles.length; i ++ ) {
+						for ( let i = 0; i < vpdFiles.length; i ++ )
 							controls[ getBaseName( vpdFiles[ i ] ) ] = false;
-						}
 
 					}
 
@@ -352,11 +351,16 @@
 					const stdGUI = new GUI(),
 						stdList = stdGUI.addFolder('Stdandard List');
 						
-					for (const key in standardlist){
-						standardlist[key] = -1;
-						stdList.add(standardlist, key);
+					function onStdChange() {
+						var changeNotice = 'Value(s) in stdandard list changed.'
+						document.getElementById("standardListValues").innerHTML = changeNotice;
 					}
 						
+					for (const key in standardlist){
+						standardlist[key] = -1;
+						stdList.add(standardlist, key).onChange(onStdChange);
+					}
+					
 					stdList.open();
 				
 				}
@@ -411,24 +415,25 @@
 
 			function onKeyPress( event ) {
 			
-				pressedKey = String.fromCharCode( event.which );
+				pressedKey = event.key;
 				console.log(pressedKey + ' is pressed.');
+				
 				switch(pressedKey){
 					case 'A':
 					case 'a':
-						document.getElementById("standardListValues").innerHTML = '';
 						modelIndex -= 1;
 						if (modelIndex < 0)
 							modelIndex = modelData.length - 1;
 						loadModel();
+						document.getElementById("standardListValues").innerHTML = 'Model changed.';
 						break;
 					case 'D':
 					case 'd':
-						document.getElementById("standardListValues").innerHTML = '';
 						modelIndex += 1;
 						if (modelIndex >= modelData.length)
 							modelIndex = 0;
 						loadModel();
+						document.getElementById("standardListValues").innerHTML = 'Model changed.';
 						break;
 					case 'P':
 					case 'p':
